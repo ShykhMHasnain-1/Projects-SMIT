@@ -37,7 +37,7 @@ def Search_By_Category():
 
         
     if user_category == 3:
-       with open("Projects\Expense\Shopping_Expense.csv","r") as file:
+       with open(File_Path,"r") as file:
             expense = csv.reader(file)
             for rows in expense:
                 Spending_Amount = rows[1]
@@ -143,7 +143,7 @@ def Categories():
         elif user_category == 3:
             Expense_Amount = int(input("Enter The Spending Amount In Shopping Expense: "))
             print(f"Amount Of Rs.{Expense_Amount} Spend On Shopping On Date:{Expense_Date_Input}")
-            with open("Projects\Expense\Shopping_Expense.csv","w") as file:
+            with open(File_Path,"w") as file:
                 expense = csv.writer(file)
                 expense.writerow([f"Category:Shopping | Spending_Amount:{Expense_Amount} | Date:{Expense_Date_Input}"])
             print("------- Expense Added In File : Shopping_Expense.csv -------")
