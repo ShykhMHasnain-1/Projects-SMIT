@@ -206,9 +206,23 @@ def Add_Expense():
     Categories()   
     Menu()
 def View_Expense():
-    pass
+        total = 0
+        file_in_folder = os.listdir(folder_path)
+        # print(file_in_folder)
+        for files in file_in_folder:
+            if files.endswith(".csv"):
+                full_file_path = os.path.join(folder_path,files)
+                with open(full_file_path,"r") as expense_file :
+                    read_file = csv.reader(expense_file)
+
+                    for total_expense in read_file:
+                        total += int(total_expense[1]) 
+                        Category = total_expense[0]
+                    print(f"Category:{Category}  ,,  Expense:{total}")  
+
 def Total_Expense():
     total = 0
+    grandtotal = 0
     file_in_folder = os.listdir(folder_path)
     # print(file_in_folder)
     for files in file_in_folder:
@@ -216,12 +230,13 @@ def Total_Expense():
             full_file_path = os.path.join(folder_path,files)
             with open(full_file_path,"r") as expense_file :
                 read_file = csv.reader(expense_file)
-                next(read_file, None)   # Skip header
 
                 for total_expense in read_file:
                     total += int(total_expense[1]) 
                     Category = total_expense[0]
-            print(f"Category:{Category}  ,,  Expense:{total}")  
+                    grandtotal += total
+            print(f"Category:{Category}  ,,  Expense:{total}") 
+            print("The GrandTotal Of The Expenses In Expense Folder is : Rs.",grandtotal) 
 
 def Menu():
     while True:
