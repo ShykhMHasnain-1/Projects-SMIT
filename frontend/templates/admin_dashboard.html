@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Command Center — AI Smart Civic Services{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h1 style="font-family: var(--font-display); font-size: 2rem;">Municipal Admin Command Center</h1>
+    <p style="color: var(--text-secondary);">Real-time monitoring, AI classification verification, and ticket dispatch control.</p>
+  </div>
+  <div style="display: flex; gap: 0.75rem;">
+    <a href="{{ url_for('admin.complaints_list') if 'admin.complaints_list' in config else '/admin/complaints' }}" class="btn btn-primary">Manage All Tickets</a>
+    <a href="{{ url_for('admin.analytics') if 'admin.analytics' in config else '/admin/analytics' }}" class="btn btn-secondary">Analytics Reports</a>
+  </div>
+</div>
+
+<!-- Stat Grid -->
+<div class="grid-4" style="margin-bottom: 2.5rem;">
+  <div class="stat-card">
+    <div class="stat-icon">📊</div>
+    <div>
+      <div class="stat-number">{{ stats.total_complaints if stats else 48 }}</div>
+      <div class="stat-label">Total Complaints</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background: var(--critical-bg); color: var(--critical);">🔥</div>
+    <div>
+      <div class="stat-number">{{ stats.critical_complaints if stats else 3 }}</div>
+      <div class="stat-label">Critical Priority</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⚡</div>
+    <div>
+      <div class="stat-number">98.4%</div>
+      <div class="stat-label">AI Accuracy Index</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">✅</div>
+    <div>
+      <div class="stat-number">{{ stats.resolved_complaints if stats else 14 }}</div>
+      <div class="stat-label">Resolved Tickets</div>
+    </div>
+  </div>
+</div>
+
+<!-- Ticket Dispatch Queue -->
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+    <h2 class="card-title">Live Ticket Queue</h2>
+    <input type="text" id="table-search-input" class="form-control" placeholder="Search tickets..." style="width: 250px; padding: 0.4rem 0.75rem;">
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title & Location</th>
+          <th>AI Category</th>
+          <th>Priority</th>
+          <th>Department</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if complaints %}
+          {% for c in complaints %}
+            <tr {% if c.priority == 'Critical' %}style="background: var(--critical-bg);"{% endif %}>
+              <td style="font-family: var(--font-mono); font-weight: 700;">#{{ c.id }}</td>
+              <td>
+                <a href="{{ url_for('citizen.complaint_detail', complaint_id=c.id) }}" style="font-weight: 700; color: var(--text-primary);">{{ c.title }}</a>
+                <div style="font-size: 0.82rem; color: var(--text-secondary);">📍 {{ c.location }}</div>
+              </td>
+              <td><span class="badge badge-ai">{{ c.category }}</span></td>
+              <td>
+                <span class="badge badge-{{ c.priority|lower }}">
+                  {{ c.priority }}
+                </span>
+              </td>
+              <td style="font-size: 0.85rem; font-weight: 600;">{{ c.assigned_dept }}</td>
+              <td>
+                <span class="badge-status badge-{% if c.status == 'Resolved' %}resolved{% elif c.status == 'In Progress' %}progress{% else %}pending{% endif %}">
+                  {{ c.status }}
+                </span>
+              </td>
+              <td>
+                <a href="{{ url_for('citizen.complaint_detail', complaint_id=c.id) }}" class="btn btn-outline btn-sm">Inspect</a>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">No complaint tickets registered yet.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

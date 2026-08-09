@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Report a Civic Issue — AI Smart Civic Services{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 1rem auto;">
+  <div style="margin-bottom: 2rem;">
+    <h1 style="font-family: var(--font-display); font-size: 2rem;">Report a Civic Issue</h1>
+    <p style="color: var(--text-secondary);">Submit issue details. Our AI engine will analyze, prioritize, and dispatch your ticket automatically.</p>
+  </div>
+
+  <div class="grid-2" style="align-items: start; gap: 2rem;">
+    <!-- Form Card -->
+    <div class="card">
+      <h2 class="card-title">Issue Details</h2>
+      <form method="POST" action="{{ url_for('citizen.submit') if 'citizen.submit' in config else '/submit' }}" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Issue Title <span style="color: var(--critical);">*</span></label>
+          <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Deep Pothole near Central Station" required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Initial Category Selection</label>
+          <select id="category" name="category" class="form-control">
+            <option value="Auto-Detect">✨ Auto-Detect (Let AI Classify)</option>
+            <option value="Roads & Infrastructure">Roads & Infrastructure</option>
+            <option value="Water Supply">Water Supply & Drainage</option>
+            <option value="Sanitation">Sanitation & Waste</option>
+            <option value="Public Safety">Public Safety & Hazards</option>
+            <option value="Street Lighting">Street Lighting & Electrical</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location / Landmark <span style="color: var(--critical);">*</span></label>
+          <input type="text" id="location" name="location" class="form-control" placeholder="Street address, cross-streets, or landmark" required>
+        </div>
+
+        <div class="form-group">
+          <label for="complaint-description">Detailed Description <span style="color: var(--critical);">*</span></label>
+          <textarea id="complaint-description" name="description" class="form-control" placeholder="Describe the hazard or issue in detail. Typing keywords like 'leak', 'fire', or 'garbage' will trigger live AI analysis..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Photos / Evidence Upload</label>
+          <div id="file-dropzone" class="dropzone">
+            <div class="dropzone-icon">📷</div>
+            <div style="font-weight: 600; font-size: 0.95rem;">Drag & drop images here or click to browse</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Supports PNG, JPG, WEBP (Max 8MB)</div>
+            <input type="file" id="file-input" name="photos" accept="image/*" multiple style="display: none;">
+          </div>
+          <div id="file-preview-grid" class="file-preview-grid"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 1rem;">🚀 Submit Issue Report</button>
+      </form>
+    </div>
+
+    <!-- Right Side: AI Assistant & Workflow Preview -->
+    <div>
+      <!-- Live AI Preview Box -->
+      <div id="ai-preview-box" class="card" style="margin-bottom: 1.5rem; display: none; background: radial-gradient(circle at top right, rgba(13, 148, 136, 0.1), transparent); border: 1px solid var(--brand-primary);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--brand-primary); display: flex; align-items: center; gap: 0.5rem;">
+            <span>🤖</span> AI Live Analysis
+          </h3>
+          <span class="badge badge-ai">SCIKIT-LEARN NLP</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Detected Category:</span>
+            <span id="ai-preview-category" style="font-weight: 600;">Processing...</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: var(--text-muted);">Estimated Severity:</span>
+            <span id="ai-preview-priority" class="badge badge-medium">MEDIUM</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Auto Escalation:</span>
+            <span style="font-weight: 600; color: var(--brand-primary);">Direct Route to Dept.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Process Workflow Card -->
+      <div class="card">
+        <h3 class="card-title">How It Works</h3>
+        <div class="timeline" style="margin-top: 1.25rem;">
+          <div class="timeline-item active">
+            <div class="timeline-title">1. Submission & Hashing</div>
+            <div class="timeline-date">Captured with timestamp & attachments</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">2. Machine Learning Classification</div>
+            <div class="timeline-date">Category & severity assigned</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">3. Department Dispatch</div>
+            <div class="timeline-date">Assigned to municipal response team</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">4. Resolution Verification</div>
+            <div class="timeline-date">Citizen notification & ticket closeout</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Tickets — Admin Portal{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <h1 style="font-family: var(--font-display); font-size: 2rem;">All Municipal Tickets</h1>
+  <p style="color: var(--text-secondary);">Manage status transitions, reassign AI classifications, and dispatch department teams.</p>
+</div>
+
+<div class="card">
+  <!-- Controls Bar -->
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+    <div style="flex: 1; min-width: 260px;">
+      <input type="text" id="table-search-input" class="form-control" placeholder="🔍 Search ticket ID, keyword, or location...">
+    </div>
+    <div style="width: 200px;">
+      <select id="table-filter-select" class="form-control">
+        <option value="">All Categories</option>
+        <option value="Water">Water Supply</option>
+        <option value="Roads">Roads & Infrastructure</option>
+        <option value="Sanitation">Sanitation</option>
+        <option value="Public Safety">Public Safety</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Citizen Issue</th>
+          <th>AI Category</th>
+          <th>AI Priority</th>
+          <th>Status</th>
+          <th>Update Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family: var(--font-mono); font-weight: 700;">#CMP-8492</td>
+          <td>
+            <div style="font-weight: 600;">Water Pipe Burst on Oak Street</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">📍 Oak & 5th Ave</div>
+          </td>
+          <td><span class="badge badge-ai">Water Supply</span></td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge-status badge-progress">In Progress</span></td>
+          <td>
+            <select class="form-control" style="padding: 0.35rem 0.5rem; font-size: 0.85rem;" onchange="showToast('Status changed to ' + this.value, 'success');">
+              <option value="Pending">Pending</option>
+              <option value="In Progress" selected>In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </td>
+          <td><a href="/complaint/8492" class="btn btn-outline btn-sm">Inspect</a></td>
+        </tr>
+        <tr>
+          <td style="font-family: var(--font-mono); font-weight: 600;">#CMP-7301</td>
+          <td>
+            <div style="font-weight: 600;">Broken Street Light & Dark Alley</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">📍 Pine District Block C</div>
+          </td>
+          <td><span class="badge badge-ai">Public Safety</span></td>
+          <td><span class="badge badge-medium">MEDIUM</span></td>
+          <td><span class="badge-status badge-pending">Pending</span></td>
+          <td>
+            <select class="form-control" style="padding: 0.35rem 0.5rem; font-size: 0.85rem;" onchange="showToast('Status changed to ' + this.value, 'success');">
+              <option value="Pending" selected>Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </td>
+          <td><a href="/complaint/7301" class="btn btn-outline btn-sm">Inspect</a></td>
+        </tr>
+        <tr>
+          <td style="font-family: var(--font-mono); font-weight: 600;">#CMP-6190</td>
+          <td>
+            <div style="font-weight: 600;">Uncollected Waste Container</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">📍 Central Market Plaza</div>
+          </td>
+          <td><span class="badge badge-ai">Sanitation</span></td>
+          <td><span class="badge badge-low">LOW</span></td>
+          <td><span class="badge-status badge-resolved">Resolved</span></td>
+          <td>
+            <select class="form-control" style="padding: 0.35rem 0.5rem; font-size: 0.85rem;" onchange="showToast('Status changed to ' + this.value, 'success');">
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved" selected>Resolved</option>
+            </select>
+          </td>
+          <td><a href="/complaint/6190" class="btn btn-outline btn-sm">Inspect</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

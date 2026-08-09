@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket #{{ complaint.id if complaint else 'CMP-8492' }} Details — AI Smart Civic Services{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+  <a href="{{ url_for('citizen.my_complaints') if 'citizen.my_complaints' in config else '/my-complaints' }}" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 500; font-size: 0.9rem;">
+    ← Back to My Complaints
+  </a>
+</div>
+
+<div class="grid-3" style="gap: 1.5rem; align-items: start;">
+  <!-- Left Main Ticket Info (2 columns span) -->
+  <div style="grid-column: span 2;">
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">TICKET #{{ complaint.id if complaint else 'CMP-8492' }}</div>
+          <h1 style="font-family: var(--font-display); font-size: 1.75rem; margin-top: 0.25rem;">{{ complaint.title if complaint else 'Water Pipe Burst on Oak Street' }}</h1>
+          <div style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">📍 {{ complaint.location if complaint else 'Oak Street & 5th Avenue Intersection' }}</div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-direction: column; align-items: flex-end;">
+          <span class="badge-status badge-{{ (complaint.status if complaint else 'progress')|lower }}">{{ complaint.status if complaint else 'In Progress' }}</span>
+          <span class="badge badge-{{ (complaint.priority if complaint else 'critical')|lower }}">{{ complaint.priority if complaint else 'CRITICAL' }}</span>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.25rem; margin-top: 1.25rem;">
+        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Issue Description</h3>
+        <p style="color: var(--text-secondary); white-space: pre-line;">{{ complaint.description if complaint else 'Main municipal water supply pipe has fractured under heavy pressure. Water is leaking rapidly onto the roadway, creating a hazard for vehicular traffic and potential basement flooding in adjacent residential buildings.' }}</p>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.25rem; margin-top: 1.25rem;">
+        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Uploaded Media Attachments</h3>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div style="width: 140px; height: 100px; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--brand-primary);">📷</div>
+          <div style="width: 140px; height: 100px; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--brand-primary);">🗺️</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Progress Timeline -->
+    <div class="card">
+      <h3 class="card-title" style="margin-bottom: 1.25rem;">Audit & Activity Trail</h3>
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="timeline-title">Ticket Created & Logged</div>
+          <div class="timeline-date">Today at 08:30 AM — Submitted via Citizen Portal</div>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-title">AI Natural Language Analysis Completed</div>
+          <div class="timeline-date">Today at 08:30 AM — Categorized as 'Water Supply', Priority 'CRITICAL' (Confidence: 99.2%)</div>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-title">Dispatched to Water Works Department</div>
+          <div class="timeline-date">Today at 08:35 AM — Auto-escalated to Duty Manager</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Field Team On Site</div>
+          <div class="timeline-date">Pending Field Technician Update</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Resolution & Closeout</div>
+          <div class="timeline-date">Expected within 4 hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar AI Metadata -->
+  <div>
+    <div class="card" style="margin-bottom: 1.5rem; background: var(--bg-surface);">
+      <h3 style="font-size: 1rem; font-weight: 700; color: var(--brand-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+        <span>🤖</span> AI Breakdown Metadata
+      </h3>
+      <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Assigned Category:</span>
+          <span style="font-weight: 600;">Water Supply</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Responsible Dept:</span>
+          <span style="font-weight: 600;">Municipal Water Board</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Estimated Resolution:</span>
+          <span style="font-weight: 600; color: var(--brand-primary);">4.0 Hours</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Critical Escalation:</span>
+          <span style="font-weight: 600; color: var(--critical);">TRIGGERED</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

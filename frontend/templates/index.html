@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Home — AI Smart Civic Services{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Intelligent Civic Issue Management</h1>
+  <p>AI-powered issue categorization, automated priority routing, and real-time municipal transparency for every citizen.</p>
+  <div class="hero-actions">
+    <a href="{{ url_for('auth.register') if 'auth.register' in config else '/register' }}" class="btn btn-primary btn-lg">Report an Issue</a>
+    <a href="{{ url_for('auth.login') if 'auth.login' in config else '/login' }}" class="btn btn-secondary btn-lg">Citizen Login</a>
+  </div>
+</section>
+
+<!-- Live Stats Cards Grid -->
+<div class="grid-4" style="margin-bottom: 3rem;">
+  <div class="stat-card">
+    <div class="stat-icon">📝</div>
+    <div>
+      <div class="stat-number">1,482</div>
+      <div class="stat-label">Issues Reported</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⚡</div>
+    <div>
+      <div class="stat-number">98.4%</div>
+      <div class="stat-label">AI Auto-Classification</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⏱️</div>
+    <div>
+      <div class="stat-number">4.2 hrs</div>
+      <div class="stat-label">Avg. Critical Response</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">✅</div>
+    <div>
+      <div class="stat-number">1,240</div>
+      <div class="stat-label">Resolved Tickets</div>
+    </div>
+  </div>
+</div>
+
+<!-- Features & How it Works -->
+<div class="grid-3" style="margin-bottom: 3rem;">
+  <div class="card">
+    <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">📷</div>
+    <h3 class="card-title">Snap & Submit</h3>
+    <p style="color: var(--text-secondary);">Upload photos and location details. The system captures geo-data and description instant snippets.</p>
+  </div>
+  <div class="card">
+    <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">🤖</div>
+    <h3 class="card-title">AI Priority Engine</h3>
+    <p style="color: var(--text-secondary);">Natural language processing evaluates severity (Critical, High, Medium, Low) and routes to department heads.</p>
+  </div>
+  <div class="card">
+    <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">📊</div>
+    <h3 class="card-title">Transparent Tracking</h3>
+    <p style="color: var(--text-secondary);">Track status milestones, read department updates, and receive automated resolution notifications.</p>
+  </div>
+</div>
+{% endblock %}

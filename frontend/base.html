@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI Smart Civic Services{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('main.index') if 'main.index' in config else '/' }}">
+      <span class="brand-mark">CS</span> CivicSense AI
+    </a>
+
+    <nav class="nav-actions">
+      <ul class="nav-menu">
+        {% if session.get('role') == 'admin' %}
+          <li><a href="{{ url_for('admin.dashboard') if 'admin.dashboard' in config else '/admin' }}" class="{% if request.path == '/admin' or 'admin' in request.path %}active{% endif %}">Dashboard</a></li>
+          <li><a href="{{ url_for('admin.complaints') if 'admin.complaints' in config else '/admin/complaints' }}">Manage Tickets</a></li>
+          <li><a href="{{ url_for('admin.analytics') if 'admin.analytics' in config else '/admin/analytics' }}">Analytics</a></li>
+        {% else %}
+          <li><a href="{{ url_for('citizen.dashboard') if 'citizen.dashboard' in config else '/citizen' }}" class="{% if request.path == '/citizen' %}active{% endif %}">Dashboard</a></li>
+          <li><a href="{{ url_for('citizen.submit') if 'citizen.submit' in config else '/submit' }}" class="{% if 'submit' in request.path %}active{% endif %}">Report Issue</a></li>
+          <li><a href="{{ url_for('citizen.my_complaints') if 'citizen.my_complaints' in config else '/my-complaints' }}" class="{% if 'my-complaints' in request.path %}active{% endif %}">My Complaints</a></li>
+        {% endif %}
+      </ul>
+
+      <div class="user-badge">
+        <button id="theme-toggle-btn" class="btn btn-outline btn-icon" title="Toggle Theme">🌙</button>
+        {% if session.get('user_id') %}
+          <div class="avatar">{{ session.get('email', 'User')[0]|upper }}</div>
+          <a href="{{ url_for('auth.logout') if 'auth.logout' in config else '/logout' }}" class="btn btn-outline btn-sm">Log out</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') if 'auth.login' in config else '/login' }}" class="btn btn-primary btn-sm">Log in</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div style="margin-bottom: 1.5rem;">
+          {% for category, message in messages %}
+            <div class="toast toast-{{ category }}" style="position: relative; animation: none;">
+              <span>{% if category == 'success' %}✅{% elif category == 'error' %}⚠️{% else %}ℹ️{% endif %}</span>
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- AI Chatbot Widget -->
+  <button id="chatbot-fab" class="chatbot-fab" title="Ask CivicBot AI">🤖</button>
+  <div id="chatbot-window" class="chatbot-window">
+    <div class="chatbot-header">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span>🤖</span>
+        <div>
+          <h4 style="font-size: 0.95rem; margin: 0;">CivicBot AI</h4>
+          <span style="font-size: 0.75rem; opacity: 0.85;">24/7 AI Civic Assistant</span>
+        </div>
+      </div>
+      <button id="chatbot-close" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.1rem;">✕</button>
+    </div>
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="chat-bubble bot">
+        Hello! I'm CivicBot. I can help you report issues, check resolution status, or route critical inquiries. How can I assist you today?
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input" class="form-control" placeholder="Ask a question..." style="padding: 0.5rem 0.75rem;">
+      <button id="chatbot-send" class="btn btn-primary btn-sm">Send</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    AI Smart Civic Services Portal — Powered by Machine Learning & Real-time Analytics.
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
